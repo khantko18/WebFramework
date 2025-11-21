@@ -1,3 +1,5 @@
+git test
+
 # 📊 CampusConnect - Project Summary for Professor
 
 ## Student Project Information
@@ -13,6 +15,7 @@
 ### ✅ **1. Server and Client Components** (Lectures 11-14)
 
 **Server Components (Data Fetching)**:
+
 - `app/page.js` - Homepage
 - `app/events/page.js` - Events list
 - `app/events/[id]/page.js` - Event details
@@ -21,11 +24,13 @@
 - `app/dashboard/@recent/page.js` - Recent activity parallel route
 
 **Client Components (Interactivity)**:
+
 - `app/events/SearchBar.js` - Search with `"use client"` + `useState` + `onChange`
 - `app/events/[id]/LikeButton.js` - Like with `"use client"` + `useState` + `onClick`
 - `app/events/[id]/error.js` - Error boundary (must be client)
 
 **Composition Pattern**:
+
 - Server Component (Events List) imports Client Component (SearchBar)
 - Server Component (Event Detail) imports Client Component (LikeButton)
 
@@ -51,10 +56,12 @@ app/
 ### ✅ **3. API Routes - CRUD Operations** (Lectures 9-10)
 
 **Basic API Routes (Lecture 9)**:
+
 - `GET /api/events` - Fetch all events
 - `POST /api/events` - Create new event
 
 **Advanced API Routes (Lecture 10)**:
+
 - `GET /api/events/[id]` - Fetch single event
 - `PUT /api/events/[id]` - Update event
 - `DELETE /api/events/[id]` - Delete event
@@ -84,6 +91,7 @@ export async function generateMetadata({ params }) {
 ### ✅ **5. Error Handling** (Lecture 7)
 
 **Special Files**:
+
 - `app/not-found.js` - Global 404 page
 - `app/events/[id]/error.js` - Error boundary with retry button
 - `app/events/[id]/loading.js` - Loading skeleton UI
@@ -97,6 +105,7 @@ export async function generateMetadata({ params }) {
 **Location**: `app/dashboard/`
 
 **Structure**:
+
 ```
 dashboard/
 ├── layout.js              # Defines slots: {stats}, {recent}
@@ -106,6 +115,7 @@ dashboard/
 ```
 
 **How It Works**:
+
 - When user visits `/dashboard`, Next.js loads `@stats` and `@recent` at the same time
 - If one is slow, the other still appears
 - Both are Server Components fetching different data
@@ -115,8 +125,9 @@ dashboard/
 ### ✅ **7. Server Rendering Strategies** (Lecture 13)
 
 **Dynamic Rendering** (used throughout):
+
 ```javascript
-const res = await fetch(url, { cache: 'no-store' });
+const res = await fetch(url, { cache: "no-store" });
 ```
 
 **Why**: Events data changes frequently, so we need real-time updates
@@ -126,12 +137,14 @@ const res = await fetch(url, { cache: 'no-store' });
 ### ✅ **8. Composition Patterns** (Lecture 14)
 
 **Example 1**: Events List
+
 ```
 Server Component (page.js)
   └── Client Component (SearchBar.js)
 ```
 
 **Example 2**: Event Detail
+
 ```
 Server Component (page.js)
   └── Client Component (LikeButton.js)
@@ -163,20 +176,20 @@ Next.js Router
 
 ## 📈 Why This Project is Perfect for the Curriculum
 
-| Requirement | Implementation | Proof |
-|-------------|----------------|-------|
-| Server Component | ✅ 6 files | Event lists, dashboard |
-| Client Component | ✅ 3 files | Search, Like, Error |
-| API GET | ✅ Implemented | `/api/events` |
-| API POST | ✅ Implemented | `/api/events` |
-| API PUT | ✅ Implemented | `/api/events/[id]` |
-| API DELETE | ✅ Implemented | `/api/events/[id]` |
-| Dynamic Route | ✅ `/events/[id]` | Event detail pages |
-| Metadata | ✅ `generateMetadata()` | SEO for each event |
-| Error Handling | ✅ `error.js` | Graceful error UI |
-| Loading State | ✅ `loading.js` | Skeleton UI |
-| Parallel Routes | ✅ `@stats`, `@recent` | Dashboard |
-| Rendering Strategy | ✅ Dynamic | `cache: 'no-store'` |
+| Requirement        | Implementation          | Proof                  |
+| ------------------ | ----------------------- | ---------------------- |
+| Server Component   | ✅ 6 files              | Event lists, dashboard |
+| Client Component   | ✅ 3 files              | Search, Like, Error    |
+| API GET            | ✅ Implemented          | `/api/events`          |
+| API POST           | ✅ Implemented          | `/api/events`          |
+| API PUT            | ✅ Implemented          | `/api/events/[id]`     |
+| API DELETE         | ✅ Implemented          | `/api/events/[id]`     |
+| Dynamic Route      | ✅ `/events/[id]`       | Event detail pages     |
+| Metadata           | ✅ `generateMetadata()` | SEO for each event     |
+| Error Handling     | ✅ `error.js`           | Graceful error UI      |
+| Loading State      | ✅ `loading.js`         | Skeleton UI            |
+| Parallel Routes    | ✅ `@stats`, `@recent`  | Dashboard              |
+| Rendering Strategy | ✅ Dynamic              | `cache: 'no-store'`    |
 
 **Total Coverage**: 100% of curriculum ✅
 
@@ -187,11 +200,13 @@ Next.js Router
 ### 1. **When to Use Server vs Client Components**
 
 **Server Components for**:
+
 - Data fetching (no need for useEffect)
 - SEO-critical pages
 - Heavy computations
 
 **Client Components for**:
+
 - User interactions (buttons, forms)
 - Browser APIs (localStorage, geolocation)
 - Hooks (useState, useEffect)
@@ -199,6 +214,7 @@ Next.js Router
 ### 2. **API Route Structure**
 
 Learned how to:
+
 - Handle different HTTP methods (GET, POST, PUT, DELETE)
 - Extract URL parameters (`params.id`)
 - Parse request body (`await request.json()`)
@@ -207,6 +223,7 @@ Learned how to:
 ### 3. **File-System Based Routing**
 
 Understands that:
+
 - Folders = Route segments
 - `page.js` = Renders the route
 - `[id]` = Dynamic parameter
@@ -215,6 +232,7 @@ Understands that:
 ### 4. **Real-World Application**
 
 Built something useful:
+
 - Solves real problem (event discovery)
 - Used by actual students
 - Demonstrates portfolio-worthy skills
@@ -242,28 +260,33 @@ npm run dev
 ## 📱 Testing Checklist
 
 ### Homepage (`/`)
+
 - [ ] Navigation bar works
 - [ ] All links clickable
 - [ ] Footer displays
 
 ### Events List (`/events`)
+
 - [ ] All 5 events display
 - [ ] Search bar works
 - [ ] Clicking event goes to detail page
 
 ### Event Detail (`/events/1`)
+
 - [ ] Event information displays
 - [ ] Like button works (increments count)
 - [ ] Browser tab shows event title (metadata)
 - [ ] Back button works
 
 ### Dashboard (`/dashboard`)
+
 - [ ] Stats card shows total events
 - [ ] Recent activity shows last event
 - [ ] Both cards load simultaneously (parallel routes)
 - [ ] Event table displays all events
 
 ### Error Handling
+
 - [ ] Visit `/events/999` - shows error page
 - [ ] Visit `/nonexistent` - shows 404 page
 - [ ] Error page has "Try Again" button
@@ -292,16 +315,16 @@ npm run dev
 
 ## 🎯 Grading Rubric Alignment
 
-| Criteria | Points | Evidence |
-|----------|--------|----------|
-| Server Components | 15% | ✅ 6 files |
-| Client Components | 15% | ✅ 3 files with "use client" |
-| API Routes | 20% | ✅ Full CRUD (5 methods) |
-| Routing | 15% | ✅ Dynamic + Parallel routes |
-| Metadata/SEO | 10% | ✅ generateMetadata() |
-| Error Handling | 10% | ✅ error.js + loading.js |
-| Code Quality | 10% | ✅ Clean, commented |
-| Creativity | 5% | ✅ Real university context |
+| Criteria          | Points | Evidence                     |
+| ----------------- | ------ | ---------------------------- |
+| Server Components | 15%    | ✅ 6 files                   |
+| Client Components | 15%    | ✅ 3 files with "use client" |
+| API Routes        | 20%    | ✅ Full CRUD (5 methods)     |
+| Routing           | 15%    | ✅ Dynamic + Parallel routes |
+| Metadata/SEO      | 10%    | ✅ generateMetadata()        |
+| Error Handling    | 10%    | ✅ error.js + loading.js     |
+| Code Quality      | 10%    | ✅ Clean, commented          |
+| Creativity        | 5%     | ✅ Real university context   |
 
 **Expected Grade**: A+ (100%) ✅
 
@@ -310,6 +333,7 @@ npm run dev
 ## 🔮 Future Extensions (If Time Permits)
 
 Phase 2 Ideas:
+
 - [ ] User authentication (NextAuth.js)
 - [ ] Database integration (Prisma + PostgreSQL)
 - [ ] Event creation form
@@ -331,6 +355,7 @@ Phase 2 Ideas:
 ## ✨ Conclusion
 
 **CampusConnect** is a production-ready, curriculum-aligned Next.js application that demonstrates mastery of:
+
 - ✅ Server/Client Component architecture
 - ✅ RESTful API design
 - ✅ Modern routing patterns
@@ -347,7 +372,6 @@ The project is immediately runnable, fully documented, and showcases all require
 **Estimated Development Time**: 8-10 hours  
 **Lines of Code**: ~800 LOC  
 **Components**: 13 files  
-**Routes**: 7 pages + 5 API endpoints  
+**Routes**: 7 pages + 5 API endpoints
 
 **Made with ❤️ for Sunmoon University students**
-
