@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { getAllEvents, searchEvents, addEvent } from "@/lib/events";
 
 // GET - Fetch all events (with optional search)
@@ -24,6 +25,10 @@ export async function POST(request) {
     category: body.category,
   });
 
+  // Revalidate all pages that display events
+  revalidatePath("/dashboard");
+  revalidatePath("/events");
+  revalidatePath("/dashboard/analytics");
+
   return NextResponse.json(newEvent, { status: 201 });
 }
-

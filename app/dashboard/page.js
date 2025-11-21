@@ -1,12 +1,33 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { getAllEvents } from "@/lib/events";
+import { getUserFromCookies, isAdmin } from "@/lib/auth";
 import QuickActions from "./QuickActions";
 import EventActions from "./EventActions";
 
-// DASHBOARD MAIN PAGE - Server Component
-// Direct import instead of fetch - avoids timeout issues
+// Force dynamic rendering - always fetch fresh data
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
+// DASHBOARD MAIN PAGE - Server Component
+// Protected route - only admins can access
 export default async function DashboardPage() {
+  // Check authentication
+  const cookieStore = await cookies();
+  const authToken = cookieStore.get("auth_token");
+  
+  if (!authToken) {
+    redirect("/login");
+  }
+  
+  const user = getUserFromCookies(`auth_token=${authToken.value}`);
+  
+  // Check if user is admin
+  if (!isAdmin(user)) {
+    redirect("/events"); // Non-admins go to events page
+  }
+  
   const events = getAllEvents();
 
   return (

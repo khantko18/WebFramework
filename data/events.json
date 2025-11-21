@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "title": "Sunmoon Festival 2025",
+    "description": "Annual university festival with performances, food stalls, and games",
+    "date": "2025-05-15",
+    "location": "Main Campus Square",
+    "category": "Festival",
+    "likes": 45
+  },
+  {
+    "id": 2,
+    "title": "Coding Bootcamp",
+    "description": "Learn web development with React and Next.js",
+    "date": "2025-04-20",
+    "location": "IT Building Room 301",
+    "category": "Workshop",
+    "likes": 32
+  },
+  {
+    "id": 3,
+    "title": "K-Pop Dance Competition",
+    "description": "Show your moves! Register your team today",
+    "date": "2025-06-10",
+    "location": "University Auditorium",
+    "category": "Competition",
+    "likes": 67
+  },
+  {
+    "id": 4,
+    "title": "Job Fair 2025",
+    "description": "Meet recruiters from top companies in Korea",
+    "date": "2025-05-25",
+    "location": "Sports Complex Hall",
+    "category": "Career",
+    "likes": 89
+  },
+  {
+    "id": 5,
+    "title": "English Conversation Club",
+    "description": "Practice English with international students",
+    "date": "2025-04-05",
+    "location": "Language Center",
+    "category": "Club",
+    "likes": 23
+  },
+  {
+    "id": 6,
+    "title": "test1",
+    "description": "test1",
+    "date": "2025-11-04",
+    "location": "test1",
+    "category": "Festival",
+    "likes": 1
+  }
+]

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { getEventById, updateEvent, deleteEvent } from "@/lib/events";
 
 // GET - Fetch single event by ID
@@ -28,6 +29,11 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ error: "Event not found" }, { status: 404 });
   }
 
+  // Revalidate pages that display events
+  revalidatePath("/dashboard");
+  revalidatePath("/events");
+  revalidatePath("/dashboard/analytics");
+
   return NextResponse.json(updatedEvent);
 }
 
@@ -42,6 +48,11 @@ export async function DELETE(request, { params }) {
   if (!success) {
     return NextResponse.json({ error: "Event not found" }, { status: 404 });
   }
+
+  // Revalidate pages that display events
+  revalidatePath("/dashboard");
+  revalidatePath("/events");
+  revalidatePath("/dashboard/analytics");
 
   return NextResponse.json({ message: "Event deleted successfully" });
 }

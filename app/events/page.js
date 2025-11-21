@@ -1,94 +1,120 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import { getUserFromCookies } from "@/lib/auth";
+import { getAllEvents } from "@/lib/events";
 import SearchBar from "./SearchBar";
-import { searchEvents } from "@/lib/events";
 
-// SERVER COMPONENT - Events List Page
-// Direct import instead of fetch - avoids timeout issues
-function getEvents(search) {
-  return searchEvents(search);
-}
+// Force dynamic rendering
+export const dynamic = "force-dynamic";
 
+// Metadata for SEO
+export const metadata = {
+  title: "Events - CampusConnect",
+  description: "Browse all events at Sunmoon University",
+};
+
+// EVENTS PAGE - Server Component
+// Protected route - login required
 export default async function EventsPage({ searchParams }) {
-  // Next.js 15: searchParams is now a Promise, must await it
+  // Check authentication
+  const cookieStore = await cookies();
+  const authToken = cookieStore.get("auth_token");
+
+  if (!authToken) {
+    redirect("/login"); // Not logged in, redirect to login
+  }
+
+  const user = getUserFromCookies(`auth_token=${authToken.value}`);
+
+  if (!user) {
+    redirect("/login"); // Invalid token, redirect to login
+  }
+
+  // Await searchParams (Next.js 15 requirement)
   const params = await searchParams;
-  const search = params.search || "";
-  const events = getEvents(search);
+  const search = params?.search || "";
+
+  // Get all events
+  const allEvents = getAllEvents();
+
+  // Filter events based on search query
+  const events = search
+    ? allEvents.filter(
+        (event) =>
+          event.title.toLowerCase().includes(search.toLowerCase()) ||
+          event.description.toLowerCase().includes(search.toLowerCase()) ||
+          event.category.toLowerCase().includes(search.toLowerCase())
+      )
+    : allEvents;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
+    <div className="max-w-7xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">
-          🎉 University Events
-        </h1>
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">Campus Events</h1>
         <p className="text-gray-600">
-          Discover what's happening at Sunmoon University
+          Discover upcoming events at Sunmoon University
         </p>
       </div>
 
       {/* Search Bar - CLIENT COMPONENT */}
-      <SearchBar />
+      <SearchBar initialSearch={search} />
 
       {/* Events Grid */}
-      {events.length === 0 ? (
-        <div className="text-center py-16">
-          <p className="text-gray-500 text-lg">No events found</p>
-        </div>
-      ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {events.map((event) => (
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {events.length === 0 ? (
+          <div className="col-span-full text-center py-12">
+            <p className="text-gray-500 text-lg">
+              No events found matching "{search}"
+            </p>
+          </div>
+        ) : (
+          events.map((event) => (
             <Link
               key={event.id}
               href={`/events/${event.id}`}
-              className="block bg-white rounded-lg shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1"
+              className="bg-white rounded-lg shadow-md hover:shadow-xl transition transform hover:-translate-y-1"
             >
               <div className="p-6">
-                {/* Category Badge */}
-                <span className="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">
-                  {event.category}
-                </span>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                    {event.category}
+                  </span>
+                  <span className="text-sm text-gray-500">
+                    ❤️ {event.likes}
+                  </span>
+                </div>
 
-                {/* Title */}
-                <h2 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
+                <h2 className="text-xl font-bold text-gray-900 mb-2">
                   {event.title}
                 </h2>
 
-                {/* Description */}
-                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                <p className="text-gray-600 mb-4 line-clamp-2">
                   {event.description}
                 </p>
 
-                {/* Date & Location */}
-                <div className="space-y-1 text-sm text-gray-500 mb-4">
-                  <div className="flex items-center gap-2">
+                <div className="space-y-1 text-sm text-gray-500">
+                  <p className="flex items-center gap-2">
                     <span>📅</span>
-                    <span>{new Date(event.date).toLocaleDateString()}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
+                    {event.date}
+                  </p>
+                  <p className="flex items-center gap-2">
                     <span>📍</span>
-                    <span className="line-clamp-1">{event.location}</span>
-                  </div>
-                </div>
-
-                {/* Likes */}
-                <div className="flex items-center gap-2 text-red-500">
-                  <span>❤️</span>
-                  <span className="font-semibold">{event.likes}</span>
-                  <span className="text-gray-500 text-sm">likes</span>
+                    {event.location}
+                  </p>
                 </div>
               </div>
             </Link>
-          ))}
-        </div>
-      )}
+          ))
+        )}
+      </div>
 
-      {/* Results Info */}
-      {search && (
-        <p className="text-center text-gray-500 mt-8">
-          Found {events.length} event{events.length !== 1 ? "s" : ""} for "
-          {search}"
-        </p>
-      )}
+      {/* Results Count */}
+      <div className="mt-8 text-center text-gray-600">
+        Showing {events.length} {events.length === 1 ? "event" : "events"}
+        {search && ` for "${search}"`}
+      </div>
     </div>
   );
 }

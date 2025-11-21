@@ -1,9 +1,12 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import LikeButton from "./LikeButton";
 import { getEventById } from "@/lib/events";
+import { getUserFromCookies } from "@/lib/auth";
 
 // SERVER COMPONENT - Single Event Detail Page
-// Direct import instead of fetch - avoids timeout issues
+// Protected route - login required
 function getEvent(id) {
   const event = getEventById(parseInt(id));
   if (!event) {
@@ -25,6 +28,20 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function EventDetailPage({ params }) {
+  // Check authentication
+  const cookieStore = await cookies();
+  const authToken = cookieStore.get("auth_token");
+  
+  if (!authToken) {
+    redirect("/login"); // Not logged in, redirect to login
+  }
+  
+  const user = getUserFromCookies(`auth_token=${authToken.value}`);
+  
+  if (!user) {
+    redirect("/login"); // Invalid token, redirect to login
+  }
+  
   // Next.js 15: params is now a Promise, must await it
   const resolvedParams = await params;
   const event = getEvent(resolvedParams.id);

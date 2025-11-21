@@ -1,5 +1,8 @@
 import { getAllEvents } from "@/lib/events";
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 // PARALLEL ROUTE 2 - Recent Activity (SERVER COMPONENT)
 // Direct import instead of fetch - avoids timeout issues
 

@@ -1,22 +1,20 @@
 "use client"; // CLIENT COMPONENT - Needs onClick handlers
 
+import { useRouter } from "next/navigation";
+
 export default function QuickActions() {
+  const router = useRouter();
+
   const handleCreateEvent = () => {
-    alert(
-      "📝 Create Event Form\n\nThis would open a form to create a new event.\n\n(Feature coming soon!)"
-    );
+    router.push("/dashboard/create-event");
   };
 
   const handleSendAnnouncement = () => {
-    alert(
-      "📧 Send Announcement\n\nThis would send an email to all students.\n\n(Feature coming soon!)"
-    );
+    router.push("/dashboard/announcements");
   };
 
   const handleViewAnalytics = () => {
-    alert(
-      "📊 Analytics Dashboard\n\nThis would show:\n• Total views\n• Registration numbers\n• Popular events\n\n(Feature coming soon!)"
-    );
+    router.push("/dashboard/analytics");
   };
 
   return (
@@ -25,19 +23,19 @@ export default function QuickActions() {
       <div className="grid md:grid-cols-3 gap-4">
         <button
           onClick={handleCreateEvent}
-          className="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition font-semibold active:scale-95"
+          className="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition font-semibold"
         >
           ➕ Create New Event
         </button>
         <button
           onClick={handleSendAnnouncement}
-          className="bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition font-semibold active:scale-95"
+          className="bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition font-semibold"
         >
           📧 Send Announcement
         </button>
         <button
           onClick={handleViewAnalytics}
-          className="bg-purple-600 text-white px-4 py-3 rounded-lg hover:bg-purple-700 transition font-semibold active:scale-95"
+          className="bg-purple-600 text-white px-4 py-3 rounded-lg hover:bg-purple-700 transition font-semibold"
         >
           📊 View Analytics
         </button>
